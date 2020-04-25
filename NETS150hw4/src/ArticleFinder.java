@@ -39,7 +39,7 @@ public class ArticleFinder {
             }
             Set<Article> articles = new TreeSet<>();
             Elements elems = doc.select("article");
-            System.out.println(region + " " + elems.size());
+            System.out.println(region + ": " + elems.size() + " articles");
             if (elems.size() == 0) {
                 System.out.println("No articles for " + region + " found "
                         + "(site likely being updated). RUN AGAIN.");

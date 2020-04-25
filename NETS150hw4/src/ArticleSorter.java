@@ -12,6 +12,7 @@ public class ArticleSorter {
         regionArticles = new ArticleFinder().getArticles();
     }
     
+    // Will need to include past articles? Saved on GitHub?
     public Set<Article> getAllArticles() {
         Set<Article> answer = new TreeSet<Article>();
         for (String region : regionArticles.keySet()) {
