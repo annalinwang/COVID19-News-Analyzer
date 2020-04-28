@@ -92,7 +92,7 @@ public class ArticleFinder {
     }
     
     public Map<String, Set<Article>> getArticles() {
-        return Map.copyOf(regionArticles);
+        return regionArticles;
     }
     
 }
