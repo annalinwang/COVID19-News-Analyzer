@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
         
         ArticleSorter articleSorter = new ArticleSorter();
-        Set<Article> articles = articleSorter.getArticlesInRegion("americas");
-//        Set<Article> articles = articleSorter.getAllArticles();
+        //Set<Article> articles = articleSorter.getArticlesInRegion("americas");
+        Set<Article> articles = articleSorter.getAllArticles();
 //        Set<Article> articles = articleSorter.getArticlesInRegionOnDayOfWeek("south-east asia", DayOfWeek.TUESDAY);
 //        Set<Article> articles = articleSorter.getArticlesWithTitleContaining("trump");
         
