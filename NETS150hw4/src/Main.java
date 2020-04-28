@@ -5,7 +5,7 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-        
+        // HI ANNA!!
         ArticleSorter articleSorter = new ArticleSorter();
         Set<Article> articles = articleSorter.getArticlesInRegion("americas");
 //        Set<Article> articles = articleSorter.getAllArticles();
