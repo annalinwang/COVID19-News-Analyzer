@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-//helloooooo
 public class Article implements Comparable<Article> {
 
     private String url;
