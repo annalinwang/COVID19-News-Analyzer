@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/maxwe/Downloads/jsoup-1.13.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Anna/Documents/Penn/NETS 150/hw3/jsoup-1.13.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

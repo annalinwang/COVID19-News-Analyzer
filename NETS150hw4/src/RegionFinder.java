@@ -61,7 +61,7 @@ public class RegionFinder {
     }
     
     public Map<String, String> getRegionLinks() {
-        return Map.copyOf(regionLinks);
+        return regionLinks;
     }
     
 }
