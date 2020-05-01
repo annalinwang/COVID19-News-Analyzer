@@ -21,7 +21,7 @@ public class VectorSpaceModel {
 	 * The hashmap maps a document to another hashmap.
 	 * The second hashmap maps a term to its tf-idf weight for this document.
 	 */
-	private HashMap<ArticleDocument, HashMap<String, Double>> tfIdfWeights;
+	private HashMap<VSMDocument, HashMap<String, Double>> tfIdfWeights;
 	
 	/**
 	 * The constructor.
@@ -31,7 +31,7 @@ public class VectorSpaceModel {
 	 */
 	public VectorSpaceModel(Corpus corpus) {
 		this.corpus = corpus;
-		tfIdfWeights = new HashMap<ArticleDocument, HashMap<String, Double>>();
+		tfIdfWeights = new HashMap<VSMDocument, HashMap<String, Double>>();
 		
 		createTfIdfWeights();
 	}
@@ -43,7 +43,7 @@ public class VectorSpaceModel {
 		System.out.println("Creating the tf-idf weight vectors");
 		Set<String> terms = corpus.getInvertedIndex().keySet();
 		
-		for (ArticleDocument document : corpus.getDocuments()) {
+		for (VSMDocument document : corpus.getDocuments()) {
 			HashMap<String, Double> weights = new HashMap<String, Double>();
 			
 			for (String term : terms) {
@@ -63,7 +63,7 @@ public class VectorSpaceModel {
 	 * @param document the document whose magnitude is calculated.
 	 * @return the magnitude
 	 */
-	private double getMagnitude(ArticleDocument document) {
+	private double getMagnitude(VSMDocument document) {
 		double magnitude = 0;
 		HashMap<String, Double> weights = tfIdfWeights.get(document);
 		
@@ -80,7 +80,7 @@ public class VectorSpaceModel {
 	 * @param d2 Document 2
 	 * @return the dot product of the documents
 	 */
-	private double getDotProduct(ArticleDocument d1, ArticleDocument d2) {
+	private double getDotProduct(VSMDocument d1, VSMDocument d2) {
 		double product = 0;
 		HashMap<String, Double> weights1 = tfIdfWeights.get(d1);
 		HashMap<String, Double> weights2 = tfIdfWeights.get(d2);
@@ -99,7 +99,7 @@ public class VectorSpaceModel {
 	 * @param d2 Document 2
 	 * @return the cosine similarity
 	 */
-	public double cosineSimilarity(ArticleDocument d1, ArticleDocument d2) {
+	public double cosineSimilarity(VSMDocument d1, VSMDocument d2) {
 		return getDotProduct(d1, d2) / (getMagnitude(d1) * getMagnitude(d2));
 	}
 }

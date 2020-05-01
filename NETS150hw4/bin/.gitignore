@@ -1,6 +1,5 @@
-/ir/
-/Corpus.class
 /Document.class
-/VectorSpaceModel.class
-/VectorSpaceModelTester.class
-/ArticleDocument.class
+/TextDocument.class
+/VSMDocument.class
+/VectorSpaceModelRunner.class
+/OptimismPessimismCalculator.class

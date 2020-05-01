@@ -1,34 +1,37 @@
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
         ArticleSorter articleSorter = new ArticleSorter();
-        Set<Article> articles = articleSorter.getArticlesInRegion("americas");
-//        Set<Article> articles = articleSorter.getAllArticles();
-//        Set<Article> articles = articleSorter.getArticlesInRegionOnDayOfWeek("south-east asia", DayOfWeek.TUESDAY);
-//        Set<Article> articles = articleSorter.getArticlesWithTitleContaining("trump");
+        Set<Article> articles = articleSorter.getAllArticles();
         
-        System.out.println();
-        System.out.println(articles.size() + " articles found.");
-//        for (Article a : articles) {
-//            System.out.println(a);
-//        }
+        System.out.println(articles.size() + " articles found");
         
-//        Object[] arr = articles.toArray();
-//        for (int i = 0; i < articles.size(); i++) {
-//            System.out.println(((Article) arr[i]).getTrueUrl());
-//        }
+        articleSorter.saveAllArticles();
         
         
-//        Article a = (Article) articles.toArray()[0];
-//        
-//        System.out.println(a.toString());
-//        ArticleDocument ad = a.getDocument();
-
+        
+        
+        Set<Article> articlesToCompare = articleSorter.getArticlesByPublication("CNN");
+        
+        OptimismPessimismCalculator.calculate(articlesToCompare);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 //        Scanner input = new Scanner(System.in);
 //        System.out.print("Hello! This is our project on parsing Google News related to corona. "

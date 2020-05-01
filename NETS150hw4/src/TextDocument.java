@@ -1,19 +1,18 @@
 
 
-import java.net.URL;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.Set;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 /**
  * This class represents one document.
  * It will keep track of the term frequencies.
- * @author swapneel, maxdu
+ * @author swapneel
  *
  */
-public class ArticleDocument implements VSMDocument {
+public class TextDocument implements VSMDocument {
 	
 	/**
 	 * A hashmap for term frequencies.
@@ -24,27 +23,19 @@ public class ArticleDocument implements VSMDocument {
 	/**
 	 * The name of the file to read.
 	 */
-	private String url;
-	
+	private String filename;
 	
 	/**
 	 * The constructor.
 	 * It takes in the name of a file to read.
 	 * It will read the file and pre-process it.
-	 * @param url the name of the file
+	 * @param filename the name of the file
 	 */
-	public ArticleDocument(String url) {
-		this.url = url;
+	public TextDocument(String filename) {
+		this.filename = filename;
 		termFrequency = new HashMap<String, Integer>();
 		
-		readURLAndPreProcess();
-	}
-	
-	public ArticleDocument(boolean isTextFile, String filename) {
-	    this.url = null;
-	    termFrequency = new HashMap<String, Integer>();
-	    
-	    readTxtAndPreProcess();
+		readFileAndPreProcess();
 	}
 	
 	/**
@@ -55,29 +46,30 @@ public class ArticleDocument implements VSMDocument {
 	 * We don't do any stemming.
 	 * Once the pre-processing is done, we create and update the 
 	 */
-	private void readURLAndPreProcess() {
+	private void readFileAndPreProcess() {
 		try {
-			Document doc = Jsoup.parse(new URL(url), 5000);
-	        String wholeText = doc.text();
-	        String[] words = wholeText.split(" ");
-	        for (String word : words) {
-	            String filteredWord = word.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-                if (!(filteredWord.equalsIgnoreCase(""))) {
-                    if (termFrequency.containsKey(filteredWord)) {
-                        int oldCount = termFrequency.get(filteredWord);
-                        termFrequency.put(filteredWord, ++oldCount);
-                    } else {
-                        termFrequency.put(filteredWord, 1);
-                    }
-                }
-	        }
-		} catch (Exception e) {
-		    System.out.println("error reading " + url);
+			Scanner in = new Scanner(new File(filename));
+			System.out.println("Reading file: " + filename + " and preprocessing");
+			
+			while (in.hasNext()) {
+				String nextWord = in.next();
+				
+				String filteredWord = nextWord.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+				
+				if (!(filteredWord.equalsIgnoreCase(""))) {
+					if (termFrequency.containsKey(filteredWord)) {
+						int oldCount = termFrequency.get(filteredWord);
+						termFrequency.put(filteredWord, ++oldCount);
+					} else {
+						termFrequency.put(filteredWord, 1);
+					}
+				}
+			}
+			
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-	}
-	
-	private void readTxtAndPreProcess() {
-	    
 	}
 	
 	/**
@@ -101,11 +93,19 @@ public class ArticleDocument implements VSMDocument {
 	public Set<String> getTermList() {
 		return termFrequency.keySet();
 	}
-	
-	@Override
-	public String toString() {
-	    return url;
+
+	/**
+	 * @return the filename
+	 */
+	private String getFileName() {
+		return filename;
 	}
-
-
+	
+	/**
+	 * This method is used for pretty-printing a Document object.
+	 * @return the filename
+	 */
+	public String toString() {
+		return filename;
+	}
 }
