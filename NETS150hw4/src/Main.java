@@ -11,7 +11,7 @@ public class Main {
         ArticleSorter articleSorter = new ArticleSorter();
         Set<Article> articles = articleSorter.getAllArticles();
         
-        System.out.println(articles.size() + " articles found");
+        System.out.println("\n" + articles.size() + " articles found");
         
         articleSorter.saveAllArticles();
         
