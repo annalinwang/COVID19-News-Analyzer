@@ -1,20 +1,29 @@
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public class Article implements Comparable<Article> {
 
+    public static String fileName = "saved_articles.txt";
+    
+    private String region;
     private String googleUrl;
     private String trueUrl;
     private String title;
     private LocalDateTime date;
     private String publisher;
     
-    public Article(String url, String title, LocalDateTime date, String publisher) {
+    public Article(String region, String url, String title, LocalDateTime date, String publisher) {
+        this.region = region;
         this.googleUrl = url;
         this.title = title;
         this.date = date;
@@ -63,8 +72,56 @@ public class Article implements Comparable<Article> {
         return new ArticleDocument(getTrueUrl());
     }
     
-    public void saveArticle() {
-        // TODO
+    public boolean saveArticle() {
+        try {
+            FileWriter writer = new FileWriter(fileName, true);
+            PrintWriter out = new PrintWriter(writer);
+            if (!articleAlreadySaved()) {
+                out.append("ARTICLE:");
+                out.append("\n");
+                out.append(region);
+                out.append("\n");        
+                out.append(googleUrl);
+                out.append("\n");
+                out.append(title);
+                out.append("\n");
+                out.append(date.toString());
+                out.append("\n");
+                out.append(publisher);
+                out.append("\n");
+                out.append("\n");
+                out.flush();
+                out.close();
+                return true;
+            }
+            out.close();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    private boolean articleAlreadySaved() {
+        try {
+            FileReader reader = new FileReader(fileName);
+            BufferedReader bReader = new BufferedReader(reader);
+            while (bReader.ready()) {
+                String line = bReader.readLine();
+                if (line.equals(googleUrl)) {
+                    if (bReader.readLine().contains(title)) {
+                        bReader.close();
+                        return true;
+                    }
+                }
+            }
+            bReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     @Override
@@ -81,7 +138,7 @@ public class Article implements Comparable<Article> {
     
     @Override
     public String toString() {
-        return this.title + ", " + this.date + ", " + this.publisher + ", " + this.googleUrl;
+        return this.region + ", " + this.title + ", " + this.date + ", " + this.publisher + ", " + this.googleUrl;
     }
 
     @Override

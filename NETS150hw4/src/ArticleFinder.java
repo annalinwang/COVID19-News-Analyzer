@@ -1,5 +1,8 @@
 
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 
@@ -27,10 +30,11 @@ public class ArticleFinder {
     public ArticleFinder() {
         regionArticles = new HashMap<>();
         regionLinks = new RegionFinder().getRegionLinks();
-        initializeArticles();
+        initializeWebArticles();
+        initializeSavedArticles();
     }  
     
-    private void initializeArticles() {
+    private void initializeWebArticles() {
         for (String region : regionLinks.keySet()) {
             String regionLink = regionLinks.get(region);
             try {
@@ -40,7 +44,7 @@ public class ArticleFinder {
             }
             Set<Article> articles = new TreeSet<>();
             Elements elems = doc.select("article");
-            System.out.println(region + ": " + elems.size() + " articles");
+            System.out.println(region + ": " + elems.size() + " current articles on Google News");
             if (elems.size() == 0) {
                 System.out.println("No articles for " + region + " found "
                         + "(site likely being updated). RUN AGAIN.");
@@ -48,7 +52,7 @@ public class ArticleFinder {
             }
             for (Element elem : elems) {
                 try {
-                    String url = null;
+                    String googleUrl = null;
                     String title = null;
                     LocalDateTime date;
                     String publisher = "unknown";
@@ -57,7 +61,7 @@ public class ArticleFinder {
                     for (Element linkElem : linkElems) {
                         if (linkElem.attr("href").contains("articles") 
                                 && linkElem.hasText()) {
-                            url = linkElem.absUrl("href").trim();
+                            googleUrl = linkElem.absUrl("href").trim();
                             title = linkElem.text().trim();
                         } else if (linkElem.attr("href").contains("publications") 
                                 && linkElem.hasText()) {
@@ -82,12 +86,41 @@ public class ArticleFinder {
                             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
                     date = LocalDateTime.parse(rawDate, inputFormatter);
                     
-                    if (url != null && title != null && date != null) {
-                        articles.add(new Article(url, title, date, publisher));
+                    if (googleUrl != null && title != null && date != null) {
+                        articles.add(new Article(region, googleUrl, title, date, publisher));
                     }
                 } catch (Exception e) { }
             }
             regionArticles.put(region, articles);
+        }
+    }
+    
+    private void initializeSavedArticles() {
+        try {
+            FileReader reader = new FileReader(Article.fileName);
+            BufferedReader bReader = new BufferedReader(reader);
+
+            while (bReader.ready()) {
+                String line = bReader.readLine();
+                
+                if (line.equals("ARTICLE:")) {
+                    String savedRegion = bReader.readLine();
+                    String savedGoogleUrl = bReader.readLine();
+                    String savedTitle = bReader.readLine();
+                    LocalDateTime savedDate = LocalDateTime.parse(bReader.readLine());
+                    String savedPublisher = bReader.readLine();
+                    Article toAdd = new Article(savedRegion, savedGoogleUrl, savedTitle, savedDate, savedPublisher);
+                    Set<Article> existingArticles = regionArticles.get(savedRegion);
+                    if (!existingArticles.contains(toAdd)) {
+                        existingArticles.add(toAdd);
+                    }
+                }
+            }
+            bReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     

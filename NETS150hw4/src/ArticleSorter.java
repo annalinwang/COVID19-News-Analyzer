@@ -1,6 +1,7 @@
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +20,23 @@ public class ArticleSorter {
             answer.addAll(regionArticles.get(region));
         }
         return answer;
+    }
+    
+    public void saveAllArticles() {
+        int counter = 0;
+        for (Article article : getAllArticles()) {
+            if (article.saveArticle()) {
+                counter++;
+            }
+        }
+        System.out.println("Saved " + counter + " new articles to the dataset.");
+    }
+    
+    public Article getRandomArticle() {
+        Object[] arr = getAllArticles().toArray();
+        Random rand = new Random(System.currentTimeMillis());
+        Article article = (Article) arr[rand.nextInt(arr.length)];
+        return article;
     }
     
     // Regions: Africa, Americas, Eastern Mediterranean, Europe, South-East Asia, Western Pacific
