@@ -25,6 +25,13 @@ public class OptimismPessimismCalculator {
         
         VectorSpaceModel vectorSpace = new VectorSpaceModel(corpus);
         
+        double mostPositive = 0;
+        VSMDocument mostPositiveDoc = null;
+        double mostNegative = 0;
+        VSMDocument mostNegativeDoc = null;
+        double biggestDifference = 0;
+        VSMDocument biggestDifferenceDoc = null;
+        
         for(int i = 2; i < documents.size(); i++) {
             VSMDocument doc = documents.get(i);
             System.out.println("\nComparing to " + doc);
@@ -33,12 +40,36 @@ public class OptimismPessimismCalculator {
             System.out.println("Positive: " + vectorSpace.cosineSimilarity(positiveWords, doc));
             System.out.println("Negative: " + vectorSpace.cosineSimilarity(negativeWords, doc));
             double difference = Math.abs(positive - negative);
-            if (positive >= negative) {
+            if (difference >= 0) {
                 System.out.println("More positive by " + difference);
             } else {
-                System.out.println("More negative by " + difference);
+                System.out.println("More negative by " + Math.abs(difference));
             }
+            
+            if (positive >= mostPositive) {
+                mostPositive = positive;
+                mostPositiveDoc = doc;
+            }
+            if (negative >= mostNegative) {
+                mostNegative = negative;
+                mostNegativeDoc = doc;
+            }
+            if (difference >= biggestDifference) {
+                biggestDifference = difference;
+                biggestDifferenceDoc = doc;
+            }
+            
         }
+        
+        System.out.println("\n");
+        System.out.println("Most positive article: " + mostPositiveDoc + "\nwith positivity " + mostPositive + "\n");
+        System.out.println("Most negative article: " + mostNegativeDoc + "\nwith negativity " + mostNegative + "\n");
+        if (biggestDifference >= 0) {
+            System.out.println("Biggest Difference: " + biggestDifferenceDoc + "\nwith more positivity by " + biggestDifference);
+        } else {
+            System.out.println("Biggest Difference: " + biggestDifferenceDoc + "\nwith more negativity by " + Math.abs(biggestDifference));
+        }
+
     }
     
 }
