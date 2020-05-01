@@ -49,7 +49,6 @@ public class VectorSpaceModel {
 			for (String term : terms) {
 				double tf = document.getTermFrequency(term);
 				double idf = corpus.getInverseDocumentFrequency(term);
-				
 				double weight = tf * idf;
 				
 				weights.put(term, weight);
@@ -70,7 +69,6 @@ public class VectorSpaceModel {
 		for (double weight : weights.values()) {
 			magnitude += weight * weight;
 		}
-		
 		return Math.sqrt(magnitude);
 	}
 	
@@ -88,7 +86,6 @@ public class VectorSpaceModel {
 		for (String term : weights1.keySet()) {
 			product += weights1.get(term) * weights2.get(term);
 		}
-		
 		return product;
 	}
 	

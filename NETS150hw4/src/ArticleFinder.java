@@ -31,7 +31,7 @@ public class ArticleFinder {
         regionArticles = new HashMap<>();
         regionLinks = new RegionFinder().getRegionLinks();
         initializeWebArticles();
-        initializeSavedArticles();
+        //initializeSavedArticles();
     }  
     
     private void initializeWebArticles() {
