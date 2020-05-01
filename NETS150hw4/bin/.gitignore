@@ -1,5 +1,6 @@
-/ArticleDocument.class
+/ir/
 /Corpus.class
-/RegionFinder.class
-/URLGetter.class
+/Document.class
 /VectorSpaceModel.class
+/VectorSpaceModelTester.class
+/ArticleDocument.class
