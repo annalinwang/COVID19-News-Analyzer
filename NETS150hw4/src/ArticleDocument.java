@@ -40,13 +40,6 @@ public class ArticleDocument implements VSMDocument {
 		readURLAndPreProcess();
 	}
 	
-	public ArticleDocument(boolean isTextFile, String filename) {
-	    this.url = null;
-	    termFrequency = new HashMap<String, Integer>();
-	    
-	    readTxtAndPreProcess();
-	}
-	
 	/**
 	 * This method will read in the file and do some pre-processing.
 	 * The following things are done in pre-processing:
@@ -74,10 +67,6 @@ public class ArticleDocument implements VSMDocument {
 		} catch (Exception e) {
 		    System.out.println("error reading " + url);
 		}
-	}
-	
-	private void readTxtAndPreProcess() {
-	    
 	}
 	
 	/**
