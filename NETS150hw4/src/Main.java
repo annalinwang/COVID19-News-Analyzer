@@ -9,9 +9,9 @@ public class Main {
     public static void main(String[] args) {
 
         ArticleSorter articleSorter = new ArticleSorter();
-        Set<Article> articles = articleSorter.getAllArticles();
+        Set<Article> allArticles = articleSorter.getAllArticles();
         
-        System.out.println("\n" + articles.size() + " articles found");
+        System.out.println("\n" + allArticles.size() + " total articles.\n");
         
         articleSorter.saveAllArticles();
         
@@ -19,6 +19,8 @@ public class Main {
         
         
         Set<Article> articlesToCompare = articleSorter.getArticlesByPublication("CNN");
+        
+        System.out.println("\nComparing " + articlesToCompare.size() + " articles.");
         
         OptimismPessimismCalculator.calculate(articlesToCompare);
         

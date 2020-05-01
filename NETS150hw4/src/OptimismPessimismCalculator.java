@@ -39,7 +39,7 @@ public class OptimismPessimismCalculator {
             double negative = vectorSpace.cosineSimilarity(negativeWords, doc);
             System.out.println("Positive: " + vectorSpace.cosineSimilarity(positiveWords, doc));
             System.out.println("Negative: " + vectorSpace.cosineSimilarity(negativeWords, doc));
-            double difference = Math.abs(positive - negative);
+            double difference = positive - negative;
             if (difference >= 0) {
                 System.out.println("More positive by " + difference);
             } else {
@@ -54,14 +54,14 @@ public class OptimismPessimismCalculator {
                 mostNegative = negative;
                 mostNegativeDoc = doc;
             }
-            if (difference >= biggestDifference) {
+            if (Math.abs(difference) >= Math.abs(biggestDifference)) {
                 biggestDifference = difference;
                 biggestDifferenceDoc = doc;
             }
             
         }
         
-        System.out.println("\n");
+        System.out.println("\n---------------------------------------------\n");
         System.out.println("Most positive article: " + mostPositiveDoc + "\nwith positivity " + mostPositive + "\n");
         System.out.println("Most negative article: " + mostNegativeDoc + "\nwith negativity " + mostNegative + "\n");
         if (biggestDifference >= 0) {
