@@ -10,15 +10,21 @@ public class UserInterface {
     }
 
     public static void setUpUI() {
-        questions
-                .add(new QuestionAnswer("Learn more about the optimism/pessimism level in a certain region and time."));
         questions.add(new QuestionAnswer(
-                "Read articles with some specific filter (contains a word, from a region, date, etc.)"));
+                "Find a random article in a specific filter."));
+        questions.add(new QuestionAnswer(
+                "Find all articles in a specific filter."));
+        questions
+                .add(new QuestionAnswer("Learn about the optimism/pessimism level of a set of articles."));
+        questions
+                .add(new QuestionAnswer("Compare the optimism/pessimism level between two sets of articles."));
     }
 
     public static void promptUser() {
         setUpUI();
-        System.out.print("Hello! This is our project on parsing Google News related to corona. "
+        System.out.print("Hello! This is our project on parsing Google News related to corona.\n"
+                + "Each question comes with user-specified article filters: region, publication, "
+                + "date, weekday, and if it contains a certain word in the title."
                 + "Please input the question number which you would like an answer for:\n");
 
         for (int i = 1; i <= questions.size(); i++) {

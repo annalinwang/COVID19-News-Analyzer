@@ -1,4 +1,5 @@
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,6 +8,10 @@ import java.io.IOException;
 
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -70,6 +75,10 @@ public class Article implements Comparable<Article> {
     
     public ArticleDocument getDocument() {
         return new ArticleDocument(getTrueUrl());
+    }
+    
+    public String getRegion() {
+        return region;
     }
     
     public boolean saveArticle() {

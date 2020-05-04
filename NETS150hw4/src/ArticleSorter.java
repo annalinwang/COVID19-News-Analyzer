@@ -13,7 +13,10 @@ public class ArticleSorter {
         regionArticles = new ArticleFinder().getArticles();
     }
     
-    // Will need to include past articles? Saved on GitHub?
+    /**
+     * Gets all articles, both in database and online on Google News
+     * @return A set containing all articles
+     */
     public Set<Article> getAllArticles() {
         Set<Article> answer = new TreeSet<Article>();
         for (String region : regionArticles.keySet()) {
@@ -32,56 +35,28 @@ public class ArticleSorter {
         System.out.println("Saved " + counter + " new articles to the dataset.");
     }
     
-    public Article getRandomArticle() {
-        Object[] arr = getAllArticles().toArray();
+    public Article getRandomArticleFrom(Set<Article> articles) {
+        Object[] arr = articles.toArray();
         Random rand = new Random(System.currentTimeMillis());
         Article article = (Article) arr[rand.nextInt(arr.length)];
         return article;
     }
     
     // Regions: Africa, Americas, Eastern Mediterranean, Europe, South-East Asia, Western Pacific
-    public Set<Article> getArticlesInRegion(String region) {
+    public Set<Article> getArticlesInRegion(Set<Article> articles, String region) {
         region = region.toLowerCase();
-        String selected = null;
-        if ("africa".contains(region)) {
-            selected = "Africa";
-        } else if ("americas".contains(region)) {
-            selected = "Americas";
-        } else if ("eastern mediterranean".contains(region)) {
-            selected = "Eastern Mediterranean";
-        } else if ("europe".contains(region)) {
-            selected = "Europe";
-        } else if ("south-east asia".contains(region)) {
-            selected = "South-East Asia";
-        } else if ("western pacific".contains(region)) {
-            selected = "Western Pacific";
-        }
-        
-        if (selected == null) {
-            throw new IllegalArgumentException("Invalid region");
-        }
-        
-        return regionArticles.get(selected);
-    }
-    
-    // Should also read from text file containing previous articles
-    public Set<Article> getArticlesByPublication(String publicationQuery) {
         Set<Article> answer = new TreeSet<Article>();
-        for (String region : regionArticles.keySet()) {
-            Set<Article> articles = regionArticles.get(region);
-            for (Article article : articles) {
-                String publisher = article.getPublisher().toLowerCase();
-                if (publisher.contains(publicationQuery.toLowerCase())) {
-                    answer.add(article);
-                }
+        for (Article a : articles) {
+            if (a.getRegion().toLowerCase().contains(region)) {
+                answer.add(a);
             }
         }
         return answer;
     }
     
-    public Set<Article> getArticlesInRegionByPublication(String region, String publicationQuery) {
+    // Should also read from text file containing previous articles
+    public Set<Article> getArticlesByPublication(Set<Article> articles, String publicationQuery) {
         Set<Article> answer = new TreeSet<Article>();
-        Set<Article> articles = getArticlesInRegion(region);
         for (Article article : articles) {
             String publisher = article.getPublisher().toLowerCase();
             if (publisher.contains(publicationQuery.toLowerCase())) {
@@ -91,25 +66,9 @@ public class ArticleSorter {
         return answer;
     }
     
-    public Set<Article> getArticlesOnDay(int month, int day, int year) {
-        Set<Article> answer = new TreeSet<Article>();
-        for (String region : regionArticles.keySet()) {
-            Set<Article> articles = regionArticles.get(region);
-            for (Article article : articles) {
-                LocalDateTime articleDate = article.getDate();
-                if (articleDate.getYear() == year 
-                        && articleDate.getMonthValue() == month
-                        && articleDate.getDayOfMonth() == day) {
-                    answer.add(article);
-                }
-            }
-        }
-        return answer;
-    }
     
-    public Set<Article> getArticlesInRegionOnDay(String region, int month, int day, int year) {
+    public Set<Article> getArticlesOnDay(Set<Article> articles, int month, int day, int year) {
         Set<Article> answer = new TreeSet<Article>();
-        Set<Article> articles = getArticlesInRegion(region);
         for (Article article : articles) {
             LocalDateTime articleDate = article.getDate();
             if (articleDate.getYear() == year 
@@ -121,23 +80,21 @@ public class ArticleSorter {
         return answer;
     }
     
-    public Set<Article> getArticlesWithTitleContaining(String titleQuery) {
+    public Set<Article> getArticlesFromPastNumberOfDays(Set<Article> articles, int numDays) {
         Set<Article> answer = new TreeSet<Article>();
-        for (String region : regionArticles.keySet()) {
-            Set<Article> articles = regionArticles.get(region);
-            for (Article article : articles) {
-                String title = article.getTitle().toLowerCase();
-                if (title.contains(titleQuery.toLowerCase())) {
-                    answer.add(article);
-                }
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime past = today.minusDays(numDays);
+        for (Article article : articles) {
+            LocalDateTime articleDate = article.getDate();
+            if (articleDate.isAfter(past)) {
+                answer.add(article);
             }
         }
         return answer;
     }
     
-    public Set<Article> getArticlesInRegionWithTitleContaining(String region, String titleQuery) {
+    public Set<Article> getArticlesWithTitleContaining(Set<Article> articles, String titleQuery) {
         Set<Article> answer = new TreeSet<Article>();
-        Set<Article> articles = getArticlesInRegion(region);
         for (Article article : articles) {
             String title = article.getTitle().toLowerCase();
             if (title.contains(titleQuery.toLowerCase())) {
@@ -147,23 +104,8 @@ public class ArticleSorter {
         return answer;
     }
     
-    public Set<Article> getArticlesOnDayOfWeek(DayOfWeek day) {
+    public Set<Article> getArticlesOnDayOfWeek(Set<Article> articles, DayOfWeek day) {
         Set<Article> answer = new TreeSet<Article>();
-        for (String region : regionArticles.keySet()) {
-            Set<Article> articles = regionArticles.get(region);
-            for (Article article : articles) {
-                LocalDateTime articleDate = article.getDate();
-                if (articleDate.getDayOfWeek() == day) {
-                    answer.add(article);
-                }
-            }
-        }
-        return answer;
-    }
-    
-    public Set<Article> getArticlesInRegionOnDayOfWeek(String region, DayOfWeek day) {
-        Set<Article> answer = new TreeSet<Article>();
-        Set<Article> articles = getArticlesInRegion(region);
         for (Article article : articles) {
             LocalDateTime articleDate = article.getDate();
             if (articleDate.getDayOfWeek() == day) {
@@ -172,4 +114,5 @@ public class ArticleSorter {
         }
         return answer;
     }
+    
 }

@@ -7,18 +7,17 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-
+        
         ArticleSorter articleSorter = new ArticleSorter();
         Set<Article> allArticles = articleSorter.getAllArticles();
         
-        System.out.println("\n" + allArticles.size() + " total articles.\n");
+        System.out.println("\n" + allArticles.size() + " total articles (saved + current).\n");
         
         articleSorter.saveAllArticles();
         
+
         
-        
-        
-        Set<Article> articlesToCompare = articleSorter.getArticlesByPublication("CNN");
+        Set<Article> articlesToCompare = articleSorter.getArticlesFromPastNumberOfDays(articleSorter.getArticlesByPublication(allArticles, "cnn"), 2);
         
         System.out.println("\nComparing " + articlesToCompare.size() + " articles.");
         
@@ -26,8 +25,8 @@ public class Main {
         
         
         
-        Scanner input = new Scanner(System.in);
-        UserInterface ui = new UserInterface(input);
-        ui.promptUser(input);
+//        Scanner input = new Scanner(System.in);
+//        UserInterface ui = new UserInterface(input);
+//        ui.promptUser(input);
     }
 }
