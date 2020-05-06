@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -161,7 +162,9 @@ public class UserInterface {
             return myArticles;
         }
         else if (answer == 1) {
-            System.out.println("Please type in the publication you would like to filter");
+            System.out.println("Please type in the publication you would like to filter. \n"
+                    + "The current top 10 publications are: \n ");
+            
             String publication = input.next();
             newSet = articleSorter.getArticlesByPublication(myArticles, publication);
         }
@@ -169,6 +172,16 @@ public class UserInterface {
             System.out.println("Just to let you know, there are no articles under your filter.\n");
         }
         return newSet;
+    }
+    
+    public static void topTenPublications(Set<Article> myArticles) {
+        HashMap publicationsToNumber = new HashMap<String, Integer>();
+        for (Article x : myArticles) {
+            String publisher = x.getPublisher();
+            if (publicationsToNumber.containsKey(publisher)) {
+                
+            }
+        }
     }
     
     
