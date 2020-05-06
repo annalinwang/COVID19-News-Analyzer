@@ -1,12 +1,14 @@
 
-import java.awt.List;
+import java.util.List;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -46,6 +48,7 @@ public class UserInterface {
         while (wantsToContinue) {
             System.out.println();
             myQuestions();
+            System.out.println("-----------------------------------------------------------");
             System.out.println("Would you like to continue? (yes/no)\n");
             String ans = input.next();
             if (ans.equals("no") || ans.equals("No")) {
@@ -76,9 +79,9 @@ public class UserInterface {
             System.out.println("We will first ask you a set of questions to filter the articles you would like to"
                     + " know more about.");
             Set<Article> mySet = promptArticleFilters(allArticles);
-            System.out.println("\nComparing " + mySet.size() + " articles.");
-            OptimismPessimismCalculator.calculate(mySet);
-            OptimismPessimismCalculator.printInfo();
+            System.out.println("\nComparing " + mySet.size() + " articles...");
+            OptimismPessimismCalculator calc = new OptimismPessimismCalculator();
+            calc.calculate(mySet);
         }
     }
 
@@ -148,7 +151,8 @@ public class UserInterface {
             System.out.println("Please type in the publication you would like to filter. \n"
                     + "The current top 10 publications are: \n ");
             topTenPublications(myArticles);
-            String publication = input.next();
+            input.nextLine();
+            String publication = input.nextLine();
             newSet = articleSorter.getArticlesByPublication(myArticles, publication);
         }
         return newSet;
@@ -159,12 +163,39 @@ public class UserInterface {
         for (Article x : myArticles) {
             String publisher = x.getPublisher();
             if (publicationsToNumber.containsKey(publisher)) {
-                int num = (int) publicationsToNumber.get(publisher);
-                publicationsToNumber.replace(publisher, num++);
+                int num = publicationsToNumber.get(publisher);
+                num += 1;
+                publicationsToNumber.replace(publisher, num);
             } else {
                 publicationsToNumber.put(publisher, 1);
             }
         }
+        
+        
+        List<Map.Entry<String, Integer>> entryList = 
+                new LinkedList<Map.Entry<String, Integer>>(publicationsToNumber.entrySet()); 
+        
+        Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() { 
+            public int compare(Map.Entry<String, Integer> o1,  
+                               Map.Entry<String, Integer> o2) { 
+                return (o2.getValue()).compareTo(o1.getValue()); 
+            } 
+        }); 
+        
+        LinkedHashMap<String, Integer> solution = new LinkedHashMap<String, Integer>(); 
+        for (Map.Entry<String, Integer> entry : entryList) { 
+            solution.put(entry.getKey(), entry.getValue()); 
+        } 
+        
+        int i = 0;
+        for (String pub : solution.keySet()) {
+            i++;
+            System.out.println(i + ". " + pub + ", " + publicationsToNumber.get(pub) + " articles");
+            if (i == 10) {
+                break;
+            }
+        }
+        
         /**
          * PriorityQueue<Map.Entry<String, Integer>> queue = new
          * PriorityQueue<>(Comparator.comparing(e -> e.getValue())); for
@@ -243,7 +274,8 @@ public class UserInterface {
         } else if (answer == 1) {
             System.out.print("Please input the query you would like your articles' title to contain "
                     + "(e.g. donald trump, corona, happy: \n");
-            String words = input.next();
+            input.nextLine();
+            String words = input.nextLine();
             newSet = articleSorter.getArticlesWithTitleContaining(myArticles, words);
         }
         return newSet;

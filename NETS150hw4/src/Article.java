@@ -68,7 +68,7 @@ public class Article implements Comparable<Article> {
     }
     
     public ArticleDocument getDocument() {
-        return new ArticleDocument(getTrueUrl());
+        return new ArticleDocument(getTrueUrl(), region, title, publisher, date);
     }
     
     public String getRegion() {

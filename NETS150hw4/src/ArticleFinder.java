@@ -35,6 +35,7 @@ public class ArticleFinder {
     }  
     
     private void initializeWebArticles() {
+        System.out.println("Obtaining articles from Google News...\n");
         for (String region : regionLinks.keySet()) {
             String regionLink = regionLinks.get(region);
             try {

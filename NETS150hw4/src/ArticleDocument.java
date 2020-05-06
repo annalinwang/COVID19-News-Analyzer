@@ -1,6 +1,7 @@
 
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -26,6 +27,11 @@ public class ArticleDocument implements VSMDocument {
 	 */
 	private String url;
 	
+	private String region;
+	private String title;
+	private String publisher;
+	private LocalDateTime date;
+	
 	
 	/**
 	 * The constructor.
@@ -33,8 +39,12 @@ public class ArticleDocument implements VSMDocument {
 	 * It will read the file and pre-process it.
 	 * @param url the name of the file
 	 */
-	public ArticleDocument(String url) {
+	public ArticleDocument(String url, String region, String title, String publisher, LocalDateTime date) {
 		this.url = url;
+		this.region = region;
+		this.title = title;
+		this.publisher = publisher;
+		this.date = date;
 		termFrequency = new HashMap<String, Integer>();
 		
 		readURLAndPreProcess();
@@ -65,11 +75,35 @@ public class ArticleDocument implements VSMDocument {
                 }
 	        }
 		} catch (Exception e) {
-		    System.out.println("error reading " + url);
+		    System.out.println("error reading " + url + ". This is normal, certain webpages cannot be read.");
 		}
 	}
 	
-	/**
+	public HashMap<String, Integer> getTermFrequency() {
+        return termFrequency;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    /**
 	 * This method will return the term frequency for a given word.
 	 * If this document doesn't contain the word, it will return 0
 	 * @param word The word to look for
