@@ -1,7 +1,12 @@
 
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -34,7 +39,7 @@ public class UserInterface {
         System.out.print("Hello! This is our project on parsing Google News related to corona.\n"
                 + "Each question comes with user-specified article filters: region, publication, "
                 + "date, weekday, and if it contains a certain word in the title.\n"
-                + "Please input the question number which you would like an answer for:\n\n");
+                + "Please input the question number which you would like an answer for:\n");
 
         for (int i = 1; i <= questions.size(); i++) {
             System.out.println(i + ". " + questions.get(i - 1).getQuestion());
@@ -42,6 +47,7 @@ public class UserInterface {
 
         boolean wantsToContinue = true;
         while (wantsToContinue) {
+            System.out.println();
             myQuestions();
             System.out.println("Would you like to continue? (yes/no)\n");
             String ans = input.next();
@@ -79,50 +85,26 @@ public class UserInterface {
         }
     }
 
-    /**public static void calculateDifferencesOptimismPessimism(OptimismPessimismCalculator calc1,
-            OptimismPessimismCalculator calc2) {
-        double avgPositive1 = calc1.getAvgPositive();
-        double avgNegative1 = calc1.getAvgNegative();
-        double mostPositive1 = calc1.getMostPositive();
-        VSMDocument mostPositiveDoc1 = calc1.getMostPositiveDoc();
-        double mostNegative1 = calc1.getMostNegative();;
-        VSMDocument mostNegativeDoc1 = calc1.getMostNegativeDoc();
-        
-        double avgPositive2 = calc2.getAvgPositive();
-        double avgNegative2 = calc2.getAvgNegative();
-        double mostPositive2 = calc2.getMostPositive();
-        VSMDocument mostPositiveDoc2 = calc2.getMostPositiveDoc();
-        double mostNegative2 = calc2.getMostNegative();;
-        VSMDocument mostNegativeDoc2 = calc2.getMostNegativeDoc();
-        
-        System.out.println("The differences between your first set and second set:\n");
-        System.out.println("Your first set and second set had an average positivity/negativity  difference of: "
-                + Math.abs(avgPositive1 - avgPositive2) + "\nYour first set had an average positivity of "
-                + avgPositive1 + " while your second set had an average positivity of " + avgPositive2);
-        System.out.println("Your first set and second set had an average positivity/negativity  difference of: "
-                + Math.abs(avgNegative1 - avgNegative2) + "\nYour first set had an average negativity of "
-                + avgNegative1 + " while your second set had an average negativity of " + avgNegative2);
-        System.out.println(
-                "Your first set and second set's most positive article had positivity/negativity difference of: "
-                        + Math.abs(mostPositive1 - mostPositive2) + "Your first set's most positive article was "
-                        + mostPositiveDoc1 + "with a positivity/negativity of: " + mostPositive1
-                        + " while your second set's most positive article was: " + mostPositiveDoc2
-                        + "with a positivity/negativity of: " + mostPositive2);
-        System.out.println(
-                "Your first set and second set's most negative article had positivity/negativity difference of: "
-                        + Math.abs(mostNegative1 - mostNegative2) + "Your first set's most negative article was "
-                        + mostNegativeDoc1 + "with a positivity/negativity of: " + mostNegative1
-                        + " while your second set's most negative article was: " + mostNegativeDoc2
-                        + "with a positivity/negativity of: " + mostNegative2);
-    }*/
-    
     public Set<Article> promptArticleFilters(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         newSet = promptRegions(myArticles);
+        findSize(newSet);
         newSet = promptPublication(newSet);
+        findSize(newSet);
         newSet = promptTime(newSet);
+        findSize(newSet);
         newSet = promptTitle(newSet);
+        findSize(newSet);
         return newSet;
+    }
+    
+    public void findSize(Set<Article> myArticles) {
+        int size = myArticles.size();
+        if (size == 0) {
+            System.out.println("Just to let you know, there are no articles under your filter.\n");
+        } else {
+            System.out.println("The number of articles under your current filters is: " + myArticles.size() + "\n");
+        }
     }
 
     public Set<Article> promptRegions(Set<Article> myArticles) {
@@ -152,7 +134,7 @@ public class UserInterface {
         return addSet;
     }
     
-    public static Set<Article> promptPublication(Set<Article> myArticles) {
+    public Set<Article> promptPublication(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is publication. Please choose one of the following:\n"
                 + "1. Specific publication (cnn, cnbc, nbc, etc.)\n"
@@ -164,7 +146,7 @@ public class UserInterface {
         else if (answer == 1) {
             System.out.println("Please type in the publication you would like to filter. \n"
                     + "The current top 10 publications are: \n ");
-            
+            topTenPublications(myArticles);
             String publication = input.next();
             newSet = articleSorter.getArticlesByPublication(myArticles, publication);
         }
@@ -173,19 +155,40 @@ public class UserInterface {
         }
         return newSet;
     }
-    
+
     public void topTenPublications(Set<Article> myArticles) {
-        HashMap publicationsToNumber = new HashMap<String, Integer>();
+        Map<String, Integer> publicationsToNumber = new HashMap<String, Integer>();
         for (Article x : myArticles) {
             String publisher = x.getPublisher();
             if (publicationsToNumber.containsKey(publisher)) {
                 int num = (int) publicationsToNumber.get(publisher);
                 publicationsToNumber.replace(publisher, num++);
-            }
-            else {
-                publicationsToNumber.put(x, 1);
+            } else {
+                publicationsToNumber.put(publisher, 1);
             }
         }
+        /**
+        PriorityQueue<Map.Entry<String, Integer>> queue = new PriorityQueue<>(Comparator.comparing(e -> e.getValue()));
+        for (Map.Entry<String, Integer> entry : publicationsToNumber.entrySet()) {
+            queue.offer(entry);
+            if (queue.size() > 10) {
+                queue.poll();
+            }
+        }
+        ArrayList<String> results = new ArrayList<String>();
+        while (queue.size() > 0) {
+            results.add(queue.poll().getKey());
+        }
+        Collections.reverse(results);
+
+        for (int i = 0; i < 10; i++) {
+            if (!queue.isEmpty()) {
+                System.out.println(i + ". " + results.get(i));
+            }
+        }
+        FIX TOMORROW
+        */
+        
     }
     
     
