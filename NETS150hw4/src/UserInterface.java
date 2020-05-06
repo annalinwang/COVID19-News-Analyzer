@@ -20,7 +20,7 @@ public class UserInterface {
         articleSorter.saveAllArticles();        
     }
 
-    public static void setUpUI() {
+    public void setUpUI() {
         questions.add(new QuestionAnswer(
                 "Find a random article in a specific filter."));
         questions.add(new QuestionAnswer(
@@ -29,7 +29,7 @@ public class UserInterface {
                 .add(new QuestionAnswer("Learn about the optimism/pessimism level of a set of articles under a filter."));
     }
 
-    public static void promptUser() {
+    public void promptUser() {
         setUpUI();
         System.out.print("Hello! This is our project on parsing Google News related to corona.\n"
                 + "Each question comes with user-specified article filters: region, publication, "
@@ -54,7 +54,7 @@ public class UserInterface {
         }
     }
     
-    public static void myQuestions() {
+    public void myQuestions() {
         int number = input.nextInt();
         System.out.println();
         if (number == 1) {
@@ -116,7 +116,7 @@ public class UserInterface {
                         + "with a positivity/negativity of: " + mostNegative2);
     }*/
     
-    public static Set<Article> promptArticleFilters(Set<Article> myArticles) {
+    public Set<Article> promptArticleFilters(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         newSet = promptRegions(myArticles);
         newSet = promptPublication(newSet);
@@ -125,7 +125,7 @@ public class UserInterface {
         return newSet;
     }
 
-    public static Set<Article> promptRegions(Set<Article> myArticles) {
+    public Set<Article> promptRegions(Set<Article> myArticles) {
         System.out.print("The first filter is region. Please choose one of the following:\n"
                 + "1. Africa\n" + "2. Americas\n" + "3. Eastern Mediterranean\n" 
                 + "4. Europe\n" + "5. South-East Asia\n" + "6. Western Pacific\n" + "7. All of the above\n");
@@ -174,19 +174,23 @@ public class UserInterface {
         return newSet;
     }
     
-    public static void topTenPublications(Set<Article> myArticles) {
+    public void topTenPublications(Set<Article> myArticles) {
         HashMap publicationsToNumber = new HashMap<String, Integer>();
         for (Article x : myArticles) {
             String publisher = x.getPublisher();
             if (publicationsToNumber.containsKey(publisher)) {
-                
+                int num = (int) publicationsToNumber.get(publisher);
+                publicationsToNumber.replace(publisher, num++);
+            }
+            else {
+                publicationsToNumber.put(x, 1);
             }
         }
     }
     
     
     // not gonna use day of week...
-    public static Set<Article> promptTime(Set<Article> myArticles) {
+    public Set<Article> promptTime(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is time of publication. Please choose one of the following:\n"
                 + "1. Articles written on a specific date\n"
@@ -216,7 +220,7 @@ public class UserInterface {
         return newSet;
     }
     
-    public static Set<Article> promptTitle(Set<Article> myArticles) {
+    public Set<Article> promptTitle(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is articles with a title containing a certain word/order of words. "
                 + "Please choose one of the following:\n"
