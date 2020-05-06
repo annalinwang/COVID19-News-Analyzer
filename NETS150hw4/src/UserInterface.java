@@ -1,6 +1,4 @@
-
 import java.util.List;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -81,7 +79,12 @@ public class UserInterface {
             Set<Article> mySet = promptArticleFilters(allArticles);
             System.out.println("\nComparing " + mySet.size() + " articles...");
             OptimismPessimismCalculator calc = new OptimismPessimismCalculator();
-            calc.calculate(mySet);
+            if (mySet.size() == 0) {
+                System.out.println("There are no articles under your given filters to analyze for optimism/pessimism levels.");
+            }
+            else {
+                calc.calculate(mySet);
+            }
         }
     }
 
@@ -195,18 +198,6 @@ public class UserInterface {
                 break;
             }
         }
-        
-        /**
-         * PriorityQueue<Map.Entry<String, Integer>> queue = new
-         * PriorityQueue<>(Comparator.comparing(e -> e.getValue())); for
-         * (Map.Entry<String, Integer> entry : publicationsToNumber.entrySet()) {
-         * queue.offer(entry); if (queue.size() > 10) { queue.poll(); } }
-         * ArrayList<String> results = new ArrayList<String>(); while (queue.size() > 0)
-         * { results.add(queue.poll().getKey()); } Collections.reverse(results);
-         * 
-         * for (int i = 0; i < 10; i++) { if (!queue.isEmpty()) { System.out.println(i +
-         * ". " + results.get(i)); } } FIX TOMORROW
-         */
 
     }
 
