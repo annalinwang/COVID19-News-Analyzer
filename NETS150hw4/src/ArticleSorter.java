@@ -17,7 +17,7 @@ public class ArticleSorter {
      * Gets all articles, both in database and online on Google News
      * @return A set containing all articles
      */
-    public Set<Article> getAllArticles() {
+    public static Set<Article> getAllArticles() {
         Set<Article> answer = new TreeSet<Article>();
         for (String region : regionArticles.keySet()) {
             answer.addAll(regionArticles.get(region));
