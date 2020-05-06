@@ -165,7 +165,7 @@ public class OptimismPessimismCalculator {
             }
         }
         
-        size = documents.size();
+        size = articleDocuments.size();
         avgPositive = totalPositive / size;
         avgNegative = totalNegative / size;
         printInfo();
