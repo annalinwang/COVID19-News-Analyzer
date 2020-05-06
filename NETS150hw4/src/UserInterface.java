@@ -22,21 +22,18 @@ public class UserInterface {
         questions = new ArrayList<QuestionAnswer>();
         allArticles = articleSorter.getAllArticles();
         System.out.println("\n" + allArticles.size() + " total articles (saved + current).\n");
-        articleSorter.saveAllArticles();        
+        articleSorter.saveAllArticles();
     }
 
     public void setUpUI() {
-        questions.add(new QuestionAnswer(
-                "Find a random article in a specific filter."));
-        questions.add(new QuestionAnswer(
-                "Find all articles in a specific filter."));
-        questions
-                .add(new QuestionAnswer("Learn about the optimism/pessimism level of a set of articles under a filter."));
+        questions.add(new QuestionAnswer("Find a random article in a specific filter."));
+        questions.add(new QuestionAnswer("Find all articles in a specific filter."));
+        questions.add(
+                new QuestionAnswer("Learn about the optimism/pessimism level of a set of articles under a filter."));
     }
 
     public void promptUser() {
-        setUpUI();
-        System.out.print("Hello! This is our project on parsing Google News related to corona.\n"
+        System.out.print("\nHello! This is our project on parsing Google News related to corona.\n"
                 + "Each question comes with user-specified article filters: region, publication, "
                 + "date, weekday, and if it contains a certain word in the title.\n"
                 + "Please input the question number which you would like an answer for:\n");
@@ -55,11 +52,12 @@ public class UserInterface {
                 wantsToContinue = false;
             }
             if (ans.equals("yes") || ans.equals("Yes")) {
-                myQuestions();
+                promptUser();
+                wantsToContinue = false;
             }
         }
     }
-    
+
     public void myQuestions() {
         int number = input.nextInt();
         System.out.println();
@@ -71,7 +69,6 @@ public class UserInterface {
         } else if (number == 2) {
             System.out.println("We will first ask you a set of questions to filter your set of articles.");
             Set<Article> mySet = promptArticleFilters(allArticles);
-            System.out.println("We have found " + mySet.size() + " articles under your filter: \n");
             for (Article x : mySet) {
                 System.out.println(x.toString());
             }
@@ -89,15 +86,24 @@ public class UserInterface {
         Set<Article> newSet = new HashSet<Article>();
         newSet = promptRegions(myArticles);
         findSize(newSet);
+        if (newSet.size() == 0) {
+            return newSet;
+        }
         newSet = promptPublication(newSet);
         findSize(newSet);
+        if (newSet.size() == 0) {
+            return newSet;
+        }
         newSet = promptTime(newSet);
         findSize(newSet);
+        if (newSet.size() == 0) {
+            return newSet;
+        }
         newSet = promptTitle(newSet);
         findSize(newSet);
         return newSet;
     }
-    
+
     public void findSize(Set<Article> myArticles) {
         int size = myArticles.size();
         if (size == 0) {
@@ -108,9 +114,9 @@ public class UserInterface {
     }
 
     public Set<Article> promptRegions(Set<Article> myArticles) {
-        System.out.print("The first filter is region. Please choose one of the following:\n"
-                + "1. Africa\n" + "2. Americas\n" + "3. Eastern Mediterranean\n" 
-                + "4. Europe\n" + "5. South-East Asia\n" + "6. Western Pacific\n" + "7. All of the above\n");
+        System.out.print("The first filter is region. Please choose one of the following:\n" + "1. Africa\n"
+                + "2. Americas\n" + "3. Eastern Mediterranean\n" + "4. Europe\n" + "5. South-East Asia\n"
+                + "6. Western Pacific\n" + "7. All of the above\n");
         int currentRegion = input.nextInt();
         Set<Article> addSet = new HashSet<Article>();
         if (currentRegion == 1) {
@@ -128,30 +134,22 @@ public class UserInterface {
         } else if (currentRegion == 7) {
             return myArticles;
         }
-        if (addSet.size() == 0) {
-            System.out.println("Just to let you know, there are no articles under your filter.\n");
-        }
         return addSet;
     }
-    
+
     public Set<Article> promptPublication(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is publication. Please choose one of the following:\n"
-                + "1. Specific publication (cnn, cnbc, nbc, etc.)\n"
-                + "2. All publications\n");
+                + "1. Specific publication (cnn, cnbc, nbc, etc.)\n" + "2. All publications\n");
         int answer = input.nextInt();
         if (answer == 2) {
             return myArticles;
-        }
-        else if (answer == 1) {
+        } else if (answer == 1) {
             System.out.println("Please type in the publication you would like to filter. \n"
                     + "The current top 10 publications are: \n ");
             topTenPublications(myArticles);
             String publication = input.next();
             newSet = articleSorter.getArticlesByPublication(myArticles, publication);
-        }
-        if (newSet.size() == 0) {
-            System.out.println("Just to let you know, there are no articles under your filter.\n");
         }
         return newSet;
     }
@@ -168,79 +166,85 @@ public class UserInterface {
             }
         }
         /**
-        PriorityQueue<Map.Entry<String, Integer>> queue = new PriorityQueue<>(Comparator.comparing(e -> e.getValue()));
-        for (Map.Entry<String, Integer> entry : publicationsToNumber.entrySet()) {
-            queue.offer(entry);
-            if (queue.size() > 10) {
-                queue.poll();
-            }
-        }
-        ArrayList<String> results = new ArrayList<String>();
-        while (queue.size() > 0) {
-            results.add(queue.poll().getKey());
-        }
-        Collections.reverse(results);
+         * PriorityQueue<Map.Entry<String, Integer>> queue = new
+         * PriorityQueue<>(Comparator.comparing(e -> e.getValue())); for
+         * (Map.Entry<String, Integer> entry : publicationsToNumber.entrySet()) {
+         * queue.offer(entry); if (queue.size() > 10) { queue.poll(); } }
+         * ArrayList<String> results = new ArrayList<String>(); while (queue.size() > 0)
+         * { results.add(queue.poll().getKey()); } Collections.reverse(results);
+         * 
+         * for (int i = 0; i < 10; i++) { if (!queue.isEmpty()) { System.out.println(i +
+         * ". " + results.get(i)); } } FIX TOMORROW
+         */
 
-        for (int i = 0; i < 10; i++) {
-            if (!queue.isEmpty()) {
-                System.out.println(i + ". " + results.get(i));
-            }
-        }
-        FIX TOMORROW
-        */
-        
     }
-    
-    
+
     // not gonna use day of week...
     public Set<Article> promptTime(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is time of publication. Please choose one of the following:\n"
-                + "1. Articles written on a specific date\n"
-                + "2. Articles from the past number of days\n"
+                + "1. Articles written on a specific date\n" + "2. Articles from the past number of days\n"
                 + "3. Articles released any time\n");
         int answer = input.nextInt();
         if (answer == 3) {
             return myArticles;
-        }
-        else if (answer == 1) {
-            System.out.print("Please input the date you would like an answer for. First enter the month:\n");
+        } else if (answer == 1) {
+            int earliestMonth = earliestMonth(myArticles);
+            System.out.print(
+                    "Please input the month and day in 2020 you would like articles for. This date should be pretty recent."
+                            + "\nTo give you an idea of the earliest saved document, the earliest month is "
+                            + earliestMonth + " and the earliest day in that month is "
+                            + earliestDay(myArticles, earliestMonth) + "\nFirst enter the month (number):\n");
             int month = input.nextInt();
-            System.out.print("Please enter the day:\n");
+            System.out.print("Please enter the day (number):\n");
             int day = input.nextInt();
-            System.out.print("Please enter the year:\n");
-            int year = input.nextInt();
-            newSet = articleSorter.getArticlesOnDay(myArticles, month, day, year);
-        }
-        else if (answer == 2) {
+            newSet = articleSorter.getArticlesOnDay(myArticles, month, day, 2020);
+        } else if (answer == 2) {
             System.out.print("Please input the past number of days you would like articles from:\n");
             int days = input.nextInt();
             newSet = articleSorter.getArticlesFromPastNumberOfDays(myArticles, days);
-        }        
-        if (newSet.size() == 0) {
-            System.out.println("Just to let you know, there are no articles under your filter.\n");
         }
         return newSet;
     }
-    
+
+    public int earliestMonth(Set<Article> myArticles) {
+        int min = 13;
+        for (Article x : myArticles) {
+            int month = x.getDate().getMonthValue();
+            if (month < min) {
+                min = month;
+            }
+        }
+        return min;
+    }
+
+    public int earliestDay(Set<Article> myArticles, int month) {
+        int min = 100;
+        for (Article x : myArticles) {
+            int myMonth = x.getDate().getMonthValue();
+            if (myMonth == month) {
+                int day = x.getDate().getDayOfMonth();
+                if (day < min) {
+                    min = day;
+                }
+            }
+        }
+        return min;
+    }
+
     public Set<Article> promptTitle(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is articles with a title containing a certain word/order of words. "
-                + "Please choose one of the following:\n"
-                + "1. Filter articles with title containing words\n"
+                + "Please choose one of the following:\n" + "1. Filter articles with title containing words\n"
                 + "2. Get articles with all titles\n");
         int answer = input.nextInt();
         if (answer == 2) {
             return myArticles;
-        }
-        else if (answer == 1) {
+        } else if (answer == 1) {
             System.out.print("Please input the query you would like your articles' title to contain "
                     + "(e.g. donald trump, corona, happy: \n");
             String words = input.next();
             newSet = articleSorter.getArticlesWithTitleContaining(myArticles, words);
-        }
-        if (newSet.size() == 0) {
-            System.out.println("Just to let you know, there are no articles under your filter.\n");
         }
         return newSet;
     }
