@@ -193,7 +193,7 @@ public class UserInterface {
         int i = 0;
         for (String pub : solution.keySet()) {
             i++;
-            System.out.println(i + ". " + pub + ", " + publicationsToNumber.get(pub) + " articles");
+            System.out.println(pub + ", " + publicationsToNumber.get(pub) + " articles");
             if (i == 10) {
                 break;
             }

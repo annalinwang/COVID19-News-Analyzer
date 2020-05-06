@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -100,7 +101,7 @@ public class ArticleFinder {
         try {
             FileReader reader = new FileReader(Article.fileName);
             BufferedReader bReader = new BufferedReader(reader);
-
+            int counter = 0;
             while (bReader.ready()) {
                 String line = bReader.readLine();
                 
@@ -108,7 +109,12 @@ public class ArticleFinder {
                     String savedRegion = bReader.readLine();
                     String savedGoogleUrl = bReader.readLine();
                     String savedTitle = bReader.readLine();
-                    LocalDateTime savedDate = LocalDateTime.parse(bReader.readLine());
+                    LocalDateTime savedDate = null;
+                    try {
+                        savedDate = LocalDateTime.parse(bReader.readLine());
+                    } catch (DateTimeParseException e) {
+                        continue;
+                    }
                     String savedPublisher = bReader.readLine();
                     Article toAdd = new Article(savedRegion, savedGoogleUrl, savedTitle, savedDate, savedPublisher);
                     Set<Article> existingArticles = regionArticles.get(savedRegion);
