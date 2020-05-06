@@ -26,8 +26,6 @@ public class UserInterface {
                 "Find all articles in a specific filter."));
         questions
                 .add(new QuestionAnswer("Learn about the optimism/pessimism level of a set of articles under a filter."));
-        questions
-                .add(new QuestionAnswer("Compare the optimism/pessimism level between two sets of articles with different filters."));
     }
 
     public static void promptUser() {
@@ -77,21 +75,10 @@ public class UserInterface {
             System.out.println("\nComparing " + mySet.size() + " articles.");
             OptimismPessimismCalculator.calculate(mySet);
             OptimismPessimismCalculator.printInfo();
-        } else if (number == 4) {
-            System.out.println("We will be comparing two sets of articles for optimism/pessimism."
-                    + "\nWe will first ask you a set of questions to filter the FIRST set of articles to compare.");
-            Set<Article> firstSet = promptArticleFilters(allArticles);
-            OptimismPessimismCalculator calc1 = new OptimismPessimismCalculator();
-            calc1.calculate(firstSet);
-            System.out.println("The next set of questions are to filter the SECOND set of articles to compare.");
-            Set<Article> secondSet = promptArticleFilters(allArticles);
-            OptimismPessimismCalculator calc2 = new OptimismPessimismCalculator();
-            calc2.calculate(secondSet);
-            calculateDifferencesOptimismPessimism(calc1, calc2);
         }
     }
 
-    public static void calculateDifferencesOptimismPessimism(OptimismPessimismCalculator calc1,
+    /**public static void calculateDifferencesOptimismPessimism(OptimismPessimismCalculator calc1,
             OptimismPessimismCalculator calc2) {
         double avgPositive1 = calc1.getAvgPositive();
         double avgNegative1 = calc1.getAvgNegative();
@@ -126,7 +113,7 @@ public class UserInterface {
                         + mostNegativeDoc1 + "with a positivity/negativity of: " + mostNegative1
                         + " while your second set's most negative article was: " + mostNegativeDoc2
                         + "with a positivity/negativity of: " + mostNegative2);
-    }
+    }*/
     
     public static Set<Article> promptArticleFilters(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
@@ -166,7 +153,7 @@ public class UserInterface {
     
     public static Set<Article> promptPublication(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
-        System.out.print("The next filter is publication. Please choose one of the following."
+        System.out.print("The next filter is publication. Please choose one of the following:\n"
                 + "1. Specific publication (cnn, cnbc, nbc, etc.)\n"
                 + "2. All publications\n");
         int answer = input.nextInt();
@@ -188,7 +175,7 @@ public class UserInterface {
     // not gonna use day of week...
     public static Set<Article> promptTime(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
-        System.out.print("The next filter is time of publication. Please choose one of the following."
+        System.out.print("The next filter is time of publication. Please choose one of the following:\n"
                 + "1. Articles written on a specific date\n"
                 + "2. Articles from the past number of days\n"
                 + "3. Articles released any time\n");
@@ -219,7 +206,7 @@ public class UserInterface {
     public static Set<Article> promptTitle(Set<Article> myArticles) {
         Set<Article> newSet = new HashSet<Article>();
         System.out.print("The next filter is articles with a title containing a certain word/order of words. "
-                + "Please choose one of the following."
+                + "Please choose one of the following:\n"
                 + "1. Filter articles with title containing words\n"
                 + "2. Get articles with all titles\n");
         int answer = input.nextInt();
