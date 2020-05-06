@@ -77,7 +77,7 @@ public class UserInterface {
             System.out.println("We will first ask you a set of questions to filter the articles you would like to"
                     + " know more about.");
             Set<Article> mySet = promptArticleFilters(allArticles);
-            System.out.println("\nComparing " + mySet.size() + " articles...");
+            System.out.println("\nCalculating optimism/pessimism for " + mySet.size() + " articles...");
             OptimismPessimismCalculator calc = new OptimismPessimismCalculator();
             if (mySet.size() == 0) {
                 System.out.println("There are no articles under your given filters to analyze for optimism/pessimism levels.");
