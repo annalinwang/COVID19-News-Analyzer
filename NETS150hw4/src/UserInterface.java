@@ -264,7 +264,7 @@ public class UserInterface {
             return myArticles;
         } else if (answer == 1) {
             System.out.print("Please input the query you would like your articles' title to contain "
-                    + "(e.g. donald trump, corona, happy: \n");
+                    + "(e.g. donald trump, corona, happy): \n");
             input.nextLine();
             String words = input.nextLine();
             newSet = articleSorter.getArticlesWithTitleContaining(myArticles, words);
