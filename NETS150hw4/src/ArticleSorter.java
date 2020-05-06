@@ -32,7 +32,7 @@ public class ArticleSorter {
                 counter++;
             }
         }
-        System.out.println("Saved " + counter + " new articles to the dataset.");
+        System.out.println("Saved " + counter + " new articles to the dataset.\n");
     }
     
     public Article getRandomArticleFrom(Set<Article> articles) {

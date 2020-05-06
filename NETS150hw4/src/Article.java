@@ -141,7 +141,7 @@ public class Article implements Comparable<Article> {
     
     @Override
     public String toString() {
-        return this.region + ", " + this.title + ", " + this.date + ", " + this.publisher + ", " + this.googleUrl;
+        return "----\n" + this.title + "\n" + this.date + "\n" + this.publisher + "\n" + this.googleUrl + "\n";
     }
 
     @Override
