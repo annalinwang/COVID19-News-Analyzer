@@ -1,10 +1,27 @@
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class OptimismPessimismCalculator {
 
+    private static int size;
+    private static double avgPositive;
+    private static double avgNegative;
+    private static double mostPositive;
+    private static VSMDocument mostPositiveDoc;
+    private static double mostNegative;
+    private static VSMDocument mostNegativeDoc;
+    private static double biggestDifference;
+    private static VSMDocument biggestDifferenceDoc;
+    
+    public OptimismPessimismCalculator() {
+        mostPositive = 0;
+        mostPositiveDoc = null;
+        mostNegative = 0;
+        mostNegativeDoc = null;
+        biggestDifference = 0;
+        biggestDifferenceDoc = null;
+    }
     
     public static void calculate(Set<Article> articles) {
         
@@ -24,13 +41,6 @@ public class OptimismPessimismCalculator {
         Corpus corpus = new Corpus(documents);
         
         VectorSpaceModel vectorSpace = new VectorSpaceModel(corpus);
-        
-        double mostPositive = 0;
-        VSMDocument mostPositiveDoc = null;
-        double mostNegative = 0;
-        VSMDocument mostNegativeDoc = null;
-        double biggestDifference = 0;
-        VSMDocument biggestDifferenceDoc = null;
         
         double totalPositive = 0;
         double totalNegative = 0;
@@ -69,11 +79,44 @@ public class OptimismPessimismCalculator {
             }
             
         }
-        
-        int size = documents.size();
-        double avgPositive = totalPositive / size;
-        double avgNegative = totalNegative / size;
-        
+        size = documents.size();
+        avgPositive = totalPositive / size;
+        avgNegative = totalNegative / size;
+    }
+    
+    public double getAvgPositive() {
+        return avgPositive;
+    }
+    
+    public double getAvgNegative() {
+        return avgNegative;
+    }
+    
+    public double getMostPositive() {
+        return mostPositive;
+    }
+    
+    public VSMDocument getMostPositiveDoc() {
+        return mostPositiveDoc;
+    }
+    
+    public double getMostNegative() {
+        return mostNegative;
+    }
+    
+    public VSMDocument getMostNegativeDoc() {
+        return mostNegativeDoc;
+    }
+    
+    public double getBiggestDifference() {
+        return biggestDifference;
+    }
+    
+    public VSMDocument getBiggestDifferenceDoc() {
+        return biggestDifferenceDoc;
+    }
+    
+    public static void printInfo() {
         System.out.println("\n---------------------------------------------\n");
         System.out.println("Most positive article: " + mostPositiveDoc + "\nwith positivity " + mostPositive + "\n");
         System.out.println("Most negative article: " + mostNegativeDoc + "\nwith negativity " + mostNegative + "\n");
