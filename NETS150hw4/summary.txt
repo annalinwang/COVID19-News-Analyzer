@@ -1,0 +1,31 @@
+NETS 150 Hw5 Project
+COVID-19 News Outlet Analyzer - Maxwell Du and Anna Wang
+
+Welcome to our final project! We thought that it would be interesting to apply the knowledge we learned from NETS 150 such as INFORMATION NETWORKS and DOCUMENT SEARCH to news and media related to COVID-19. 
+
+--------------------------------------------------------------------------
+
+Use of Information Networks
+
+Using Jsoup, we parse through and save articles from Google News's COVID-19 section to compare articles of certain dates, regions, and publishers. 
+
+Our program allows the user to filter a set of articles depending on the region of publication, publisher, date of publication, and keywords in title. Then, the user can either list all the articles out, receive a random article, or learn about the optimism/pessimism levels of that article set.
+
+
+Use of Document Search
+
+For our positivity/negativity calculator, we implemented it in a way similar to what we learned in hw4. We created a document search function which took in a list of positive words and negative words that we found online (http://ptrckprry.com/course/ssd/data/positive-words.txt, http://ptrckprry.com/course/ssd/data/negative-words.txt) and found the term frequency and cosine similarity to calculate the positivity/negativity of that article.
+
+--------------------------------------------------------------------------
+
+Over the past few weeks, we have been calling and working through Git to collaborate on our project. An issue we ran into but eventually fixed that caused the code not to work was that txt files had different requirements on mac versus pc. We will keep this in mind for future projects. 
+
+Work breakdown:
+
+Anna and Max: Deciding on our project, changing it from our original project of analyzing Youtube content creators via Socialblade
+Max: Code framework for sorting and saving COVID-19 articles from google news 
+Anna: Add input lists of positive/negative words for document search
+Max: Code optimism/pessimism calculator and output basic/advanced results
+Anna: Code user interface/interactive questions for user to filter and learn more about a set of articles.
+Max: Empirical Analysis
+Anna: Summary and user manual
