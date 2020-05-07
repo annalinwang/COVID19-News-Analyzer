@@ -1,10 +1,7 @@
-
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,19 +19,25 @@ import org.jsoup.select.Elements;
 
 public class ArticleFinder {
 
-    
     private Document doc;
     private Map<String, String> regionLinks;
-    
     private Map<String, Set<Article>> regionArticles;
-    
+
+    /**
+     * Creates an ArticleFinder class that initializes web and saved articles
+     * Used for regionArticles in ArticleSorter.
+     */
     public ArticleFinder() {
         regionArticles = new HashMap<>();
         regionLinks = new RegionFinder().getRegionLinks();
         initializeWebArticles();
         initializeSavedArticles();
-    }  
-    
+    }
+
+    /**
+     * Obtains articles from google news and adds any new articles into our txt file
+     * Adds the URL, title, and publisher into our txt file.
+     */
     private void initializeWebArticles() {
         System.out.println("Obtaining articles from Google News...\n");
         for (String region : regionLinks.keySet()) {
@@ -46,10 +49,11 @@ public class ArticleFinder {
             }
             Set<Article> articles = new TreeSet<>();
             Elements elems = doc.select("article");
-            System.out.println(region + ": " + elems.size() + " articles currently on Google News.");
+            System.out.println(region + ": " + elems.size() + 
+                    " articles currently on Google News.");
             if (elems.size() == 0) {
-                System.out.println("No articles for " + region + " found "
-                        + "(site likely being updated). RUN AGAIN.");
+                System.out.println("No articles for " + region + 
+                        " found " + "(site likely being updated). RUN AGAIN.");
                 return;
             }
             for (Element elem : elems) {
@@ -61,8 +65,7 @@ public class ArticleFinder {
                     // URL, TITLE, & PUBLISHER
                     Elements linkElems = elem.getElementsByAttribute("href");
                     for (Element linkElem : linkElems) {
-                        if (linkElem.attr("href").contains("articles") 
-                                && linkElem.hasText()) {
+                        if (linkElem.attr("href").contains("articles") && linkElem.hasText()) {
                             googleUrl = linkElem.absUrl("href").trim();
                             title = linkElem.text().trim();
                         } else if (linkElem.attr("href").contains("publications") 
@@ -70,7 +73,7 @@ public class ArticleFinder {
                             publisher = linkElem.text().trim();
                         }
                     }
-                    
+
                     // Not every article has a "publications" link to mark publisher
                     if (publisher.equals("unknown")) {
                         Elements aElems = elem.select("a");
@@ -80,31 +83,35 @@ public class ArticleFinder {
                             }
                         }
                     }
-                    
+
                     // DATE
                     Element dateElem = elem.getElementsByAttribute("datetime").first();
                     String rawDate = dateElem.attr("datetime");
                     DateTimeFormatter inputFormatter = 
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'",
+                            Locale.ENGLISH);
                     date = LocalDateTime.parse(rawDate, inputFormatter);
-                    
+
                     if (googleUrl != null && title != null && date != null) {
                         articles.add(new Article(region, googleUrl, title, date, publisher));
                     }
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                }
             }
             regionArticles.put(region, articles);
         }
     }
-    
+
+    /**
+     * Initializes saved articles and updates them accordingly.
+     */
     private void initializeSavedArticles() {
         try {
-            FileReader reader = new FileReader(Article.fileName);
+            FileReader reader = new FileReader(Article.getFileName());
             BufferedReader bReader = new BufferedReader(reader);
-            int counter = 0;
             while (bReader.ready()) {
                 String line = bReader.readLine();
-                
+
                 if (line.equals("ARTICLE:")) {
                     String savedRegion = bReader.readLine();
                     String savedGoogleUrl = bReader.readLine();
@@ -116,7 +123,8 @@ public class ArticleFinder {
                         continue;
                     }
                     String savedPublisher = bReader.readLine();
-                    Article toAdd = new Article(savedRegion, savedGoogleUrl, savedTitle, savedDate, savedPublisher);
+                    Article toAdd = new Article(savedRegion, savedGoogleUrl, 
+                            savedTitle, savedDate, savedPublisher);
                     Set<Article> existingArticles = regionArticles.get(savedRegion);
                     if (!existingArticles.contains(toAdd)) {
                         existingArticles.add(toAdd);
@@ -130,9 +138,12 @@ public class ArticleFinder {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * @return the map of articles
+     */
     public Map<String, Set<Article>> getArticles() {
         return regionArticles;
     }
-    
+
 }

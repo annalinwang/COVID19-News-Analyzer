@@ -1,15 +1,16 @@
-
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-//Start from Google News homepage?
+/**
+ * Creates a map that links urls to regions from Google News
+ * @author Anna, maxdu
+ *
+ */
 public class RegionFinder {
 
     private String url = 
@@ -18,9 +19,11 @@ public class RegionFinder {
             + "sections/CAQqEAgAKgcICjCcuZcLMI_irgMww"
             + "LvMBg?hl=en-US&gl=US&ceid=US%3Aen";
     private Document doc;
-    
     private Map<String, String> regionLinks;
     
+    /**
+     * Instantiates a regionfinder class
+     */
     public RegionFinder() {
         try {
             doc = Jsoup.connect(url).get();
@@ -31,6 +34,10 @@ public class RegionFinder {
         initializeRegionLinks();
     }  
     
+    /**
+     * Initializes all the links by region: Africa, Americas,
+     * Eastern Mediterranean, Europe, South-East Asia, and Western Pacific
+     */
     private void initializeRegionLinks() {
         Elements elems = doc.getElementsByAttribute("aria-label");
         for (Element elem : elems) {
@@ -60,6 +67,9 @@ public class RegionFinder {
         }
     }
     
+    /**
+     * @return  the map linking region to url
+     */
     public Map<String, String> getRegionLinks() {
         return regionLinks;
     }
