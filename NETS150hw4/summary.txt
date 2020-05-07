@@ -1,7 +1,9 @@
 NETS 150 Hw5 Project
 COVID-19 News Outlet Analyzer - Maxwell Du and Anna Wang
 
-Welcome to our final project! We thought that it would be interesting to apply the knowledge we learned from NETS 150 such as INFORMATION NETWORKS and DOCUMENT SEARCH to news and media related to COVID-19. 
+Welcome to our final project! In our current times, in the throes of a global pandemic, news and media outlets are more salient than ever. While citizens around the world follow stay at home orders, news acts as a source of vital information which we can react to and predict our future livelihoods off of. Media can also show the current mindset and effect of corona on certain regions.
+
+Thus, we thought that it would be interesting to apply the knowledge we learned from NETS 150 such as INFORMATION NETWORKS and DOCUMENT SEARCH to news and media related to COVID-19. 
 
 --------------------------------------------------------------------------
 
