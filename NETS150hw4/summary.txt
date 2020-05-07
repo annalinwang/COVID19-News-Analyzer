@@ -7,14 +7,14 @@ Welcome to our final project! We thought that it would be interesting to apply t
 
 Use of Information Networks
 
-Using Jsoup, we parse through and save articles from Google News's COVID-19 section to compare articles of certain dates, regions, and publishers. 
+Using Jsoup, we parse through and save articles from Google News's COVID-19 section to compare articles of certain dates, regions, and publishers. It will save the URLs of the articles it finds, along with information corresponding to each article.
 
 Our program allows the user to filter a set of articles depending on the region of publication, publisher, date of publication, and keywords in title. Then, the user can either list all the articles out, receive a random article, or learn about the optimism/pessimism levels of that article set.
 
 
 Use of Document Search
 
-For our positivity/negativity calculator, we implemented it in a way similar to what we learned in hw4. We created a document search function which took in a list of positive words and negative words that we found online (http://ptrckprry.com/course/ssd/data/positive-words.txt, http://ptrckprry.com/course/ssd/data/negative-words.txt) and found the term frequency and cosine similarity to calculate the positivity/negativity of that article.
+For our positivity/negativity calculator, we implemented it in a way similar to what we learned in hw4. We created a document search function which took in a list of positive words and negative words that we found online (http://ptrckprry.com/course/ssd/data/positive-words.txt, http://ptrckprry.com/course/ssd/data/negative-words.txt) and found the term frequency and cosine similarity to calculate the positivity/negativity of that article. New code was written to treat each article's HTML string as a document that could be used with the VectorSpaceModel.
 
 --------------------------------------------------------------------------
 
@@ -23,9 +23,9 @@ Over the past few weeks, we have been calling and working through Git to collabo
 Work breakdown:
 
 Anna and Max: Deciding on our project, changing it from our original project of analyzing Youtube content creators via Socialblade
-Max: Code framework for sorting and saving COVID-19 articles from google news 
+Max: Code framework for reading, sorting, and saving COVID-19 articles from Google News 
 Anna: Add input lists of positive/negative words for document search
 Max: Code optimism/pessimism calculator and output basic/advanced results
 Anna: Code user interface/interactive questions for user to filter and learn more about a set of articles.
-Max: Empirical Analysis
+Max: Empirical analysis
 Anna: Summary and user manual
