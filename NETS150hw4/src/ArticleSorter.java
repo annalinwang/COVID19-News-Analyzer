@@ -9,6 +9,10 @@ public class ArticleSorter {
 
     static Map<String, Set<Article>> regionArticles;
     
+    /**
+     * Initializes an articlesorter class which can sort through
+     * articles to return a filtered set of articles
+     */
     public ArticleSorter() {
         regionArticles = new ArticleFinder().getArticles();
     }
@@ -25,6 +29,9 @@ public class ArticleSorter {
         return answer;
     }
     
+    /**
+     * Saves all new articles off of google news
+     */
     public void saveAllArticles() {
         int counter = 0;
         for (Article article : getAllArticles()) {
@@ -35,6 +42,10 @@ public class ArticleSorter {
         System.out.println("Saved " + counter + " new articles to the dataset.\n");
     }
     
+    /**
+     * @param articles the set of articles
+     * @return a random article from our set
+     */
     public Article getRandomArticleFrom(Set<Article> articles) {
         Object[] arr = articles.toArray();
         Random rand = new Random(System.currentTimeMillis());
@@ -42,7 +53,13 @@ public class ArticleSorter {
         return article;
     }
     
-    // Regions: Africa, Americas, Eastern Mediterranean, Europe, South-East Asia, Western Pacific
+    /**
+     * Gets articles in a certain region
+     * @param articles the articles in our set
+     * @param region Africa, Americas, Eastern Mediterranean, Europe, 
+     *          South-East Asia, or Western Pacific
+     * @return Gets articles in the region given
+     */
     public Set<Article> getArticlesInRegion(Set<Article> articles, String region) {
         region = region.toLowerCase();
         Set<Article> answer = new TreeSet<Article>();
@@ -54,7 +71,12 @@ public class ArticleSorter {
         return answer;
     }
     
-    // Should also read from text file containing previous articles
+    /**
+     * Should also read from text file containing previous articles
+     * @param articles  the articles we are filtering
+     * @param publicationQuery  the publisher we want our articles to be by
+     * @return  the set of articles published by a certain publisher
+     */
     public Set<Article> getArticlesByPublication(Set<Article> articles, String publicationQuery) {
         Set<Article> answer = new TreeSet<Article>();
         for (Article article : articles) {
@@ -66,7 +88,13 @@ public class ArticleSorter {
         return answer;
     }
     
-    
+    /**
+     * @param articles set of articles we are filtering
+     * @param month of date
+     * @param day of date
+     * @param year of date
+     * @return set of articles on the given date from a user
+     */
     public Set<Article> getArticlesOnDay(Set<Article> articles, int month, int day, int year) {
         Set<Article> answer = new TreeSet<Article>();
         for (Article article : articles) {
@@ -80,6 +108,11 @@ public class ArticleSorter {
         return answer;
     }
     
+    /**
+     * @param articles  given set of articles
+     * @param numDays   past days you want articles from
+     * @return  articles filtered from the given past days
+     */
     public Set<Article> getArticlesFromPastNumberOfDays(Set<Article> articles, int numDays) {
         Set<Article> answer = new TreeSet<Article>();
         LocalDateTime today = LocalDateTime.now();
@@ -93,6 +126,11 @@ public class ArticleSorter {
         return answer;
     }
     
+    /**
+     * @param articles given set of articles
+     * @param day   of the week you want articles from
+     * @return  articles filtered from the specific day of week
+     */
     public Set<Article> getArticlesOnDayOfWeek(Set<Article> articles, DayOfWeek day) {
         Set<Article> answer = new TreeSet<Article>();
         for (Article article : articles) {
@@ -104,7 +142,11 @@ public class ArticleSorter {
         return answer;
     }
     
-    
+    /**
+     * @param articles  given set of articles
+     * @param titleQuery    keyword you want articles to contain
+     * @return  articles filtered with keyword containing in title
+     */
     public Set<Article> getArticlesWithTitleContaining(Set<Article> articles, String titleQuery) {
         Set<Article> answer = new TreeSet<Article>();
         for (Article article : articles) {

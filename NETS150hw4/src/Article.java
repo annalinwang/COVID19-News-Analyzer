@@ -12,15 +12,23 @@ import org.jsoup.nodes.Document;
 
 public class Article implements Comparable<Article> {
 
-    public static String fileName = "saved_articles.txt";
-    
+    private static String fileName = "saved_articles.txt";
+
     private String region;
     private String googleUrl;
     private String trueUrl;
     private String title;
     private LocalDateTime date;
     private String publisher;
-    
+
+    /**
+     * Creates an Article class containing region, url, title, date, and publisher
+     * @param region of the article
+     * @param url    of the article
+     * @param title  of the article
+     * @param date   of the article
+     * @param publisher of the article
+     */
     public Article(String region, String url, String title, LocalDateTime date, String publisher) {
         this.region = region;
         this.googleUrl = url;
@@ -29,10 +37,24 @@ public class Article implements Comparable<Article> {
         this.publisher = publisher;
     }
     
+    /**
+     * @return fileName
+     */
+    public static String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @return the google url of the article
+     */
     public String getGoogleUrl() {
         return googleUrl;
     }
-    
+
+    /**
+     * We use the true url and not the google url.
+     * @return the true url of the article
+     */
     public String getTrueUrl() {
         Document doc;
         try {
@@ -55,26 +77,45 @@ public class Article implements Comparable<Article> {
         return trueUrl;
     }
 
+    /**
+     * @return title of article
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @return date of article
+     */
     public LocalDateTime getDate() {
         return date;
     }
     
+    /**
+     * @return publisher of article
+     */
     public String getPublisher() {
         return publisher;
     }
-    
+
+    /**
+     * @return a new articledocument class containing region, title, publisher, and date
+     */
     public ArticleDocument getDocument() {
         return new ArticleDocument(getTrueUrl(), region, title, publisher, date);
     }
-    
+
+    /**
+     * @return region of article
+     */
     public String getRegion() {
         return region;
     }
-    
+
+    /**
+     * Saves this article to our saved_articles.txt file. Avoids duplicates
+     * @return  true if the article saved, false otherwise
+     */
     public boolean saveArticle() {
         try {
             FileWriter writer = new FileWriter(fileName, true);
@@ -83,7 +124,7 @@ public class Article implements Comparable<Article> {
                 out.append("ARTICLE:");
                 out.append("\n");
                 out.append(region);
-                out.append("\n");        
+                out.append("\n");
                 out.append(googleUrl);
                 out.append("\n");
                 out.append(title);
@@ -104,7 +145,11 @@ public class Article implements Comparable<Article> {
         }
         return false;
     }
-    
+
+    /**
+     * Lets us know if this article has already been saved
+     * @return true if it has, false otherwise
+     */
     private boolean articleAlreadySaved() {
         try {
             FileReader reader = new FileReader(fileName);
@@ -126,22 +171,23 @@ public class Article implements Comparable<Article> {
         }
         return false;
     }
-    
+
     @Override
-    public boolean equals(Object obj) { 
-        if (obj == this) { 
-            return true; 
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
         }
-        if (!(obj instanceof Article)) { 
-            return false; 
-        } 
-        Article art = (Article) obj; 
+        if (!(obj instanceof Article)) {
+            return false;
+        }
+        Article art = (Article) obj;
         return (this.googleUrl).equals(art.googleUrl);
     }
-    
+
     @Override
     public String toString() {
-        return "----\n" + this.title + "\n" + this.date + "\n" + this.publisher + "\n" + this.googleUrl + "\n";
+        return "----\n" + this.title + "\n" + this.date + "\n" 
+                + this.publisher + "\n" + this.googleUrl + "\n";
     }
 
     @Override
@@ -155,5 +201,5 @@ public class Article implements Comparable<Article> {
         }
         return compared;
     }
-    
+
 }

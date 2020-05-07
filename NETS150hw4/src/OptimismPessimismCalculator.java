@@ -7,6 +7,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class is our optimismpessimism calculator which calculates interesting
+ * statistics from a given set of articles
+ * @author Anna, maxdu
+ */
 public class OptimismPessimismCalculator {
 
     private int size;
@@ -28,6 +33,11 @@ public class OptimismPessimismCalculator {
     private Map<DayOfWeek, LinkedList<Double>> weekdayOptimism;
     private Map<DayOfWeek, LinkedList<Double>> weekdayPessimism;
     
+    /**
+     * Sets up our optimism pessimism calculator class
+     * Sets numbers to 0 and documents to null.
+     * Instantiates hashmaps for specific optimism/pessimism maps
+     */
     public OptimismPessimismCalculator() {
         mostPositive = 0;
         mostPositiveDoc = null;
@@ -46,6 +56,10 @@ public class OptimismPessimismCalculator {
         weekdayPessimism = new HashMap<>();
     }
     
+    /**
+     * Given a set of articles, does the calculations for optimism/pessimism
+     * @param articles  given set of articles
+     */
     public void calculate(Set<Article> articles) {
         
         Set<ArticleDocument> articleDocuments = new HashSet<>();
@@ -171,38 +185,66 @@ public class OptimismPessimismCalculator {
         printInfo();
     }
     
+    /**
+     * @return average positivity from given set of articles
+     */
     public double getAvgPositive() {
         return avgPositive;
     }
     
+    /**
+     * @return average negativity from given set of articles
+     */
     public double getAvgNegative() {
         return avgNegative;
     }
     
+    /**
+     * @return  most positivity from given set of articles
+     */
     public double getMostPositive() {
         return mostPositive;
     }
     
+    /**
+     * @return most positivie doc from given set of articles
+     */
     public VSMDocument getMostPositiveDoc() {
         return mostPositiveDoc;
     }
     
+    /**
+     * @return most negativity from given set of articles
+     */
     public double getMostNegative() {
         return mostNegative;
     }
     
+    /**
+     * @return most negative doc from given set of articles
+     */
     public VSMDocument getMostNegativeDoc() {
         return mostNegativeDoc;
     }
     
+    /**
+     * @return  the biggest difference between positivity and negativity
+     */
     public double getBiggestDifference() {
         return biggestDifference;
     }
     
+    /**
+     * @return  doc with biggest difference between positivity and negativity
+     */
     public VSMDocument getBiggestDifferenceDoc() {
         return biggestDifferenceDoc;
     }
     
+    /**
+     * Prints out all the basic and advanced results that we found with our 
+     * optimism/pessimism calculator from the given set of articles
+     */
     public void printInfo() {
         System.out.println("\n\n---------------------BASIC RESULTS-----------------------\n");
         System.out.println("Most positive article: " + mostPositiveDoc + "\nwith positivity " + mostPositive + "\n");
